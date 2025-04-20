@@ -1,16 +1,19 @@
-meme_dict = {
-            "КРИНЖ": "Что-то стыдное",
-            "ЛОЛ": "Очень смешно",
-            "РОФЛ": "Шутка",
-            "ЩИЩ": "Одобрение или восторг",
-            "КРИПОВЫЙ": "Страшный, пугающий",
-            "АГРИТЬСЯ": "Злиться",
-            "ОЛД": "Старый",
-            "СКУФ": "Толстый человек, в возрасте 40-60"
-            }
+import telebot
+from config import TOKEN
 
-word = input("Введите непонятное слово: ").upper()
-if word in meme_dict.keys():
-    print(word + " - " + meme_dict[word])
-else:
-    print("Такого слова нет в словаре")
+# Инициализация бота с использованием его токена
+bot = telebot.TeleBot(TOKEN)
+
+# Обработчик команды '/start' и '/hello'
+@bot.message_handler(commands=['start', 'hello'])
+def send_welcome(message):
+    bot.reply_to(message, f'Привет! Я бот {bot.get_me().first_name}!')
+
+# Обработчик команды '/heh'
+@bot.message_handler(commands=['heh'])
+def send_heh(message):
+    count_heh = int(message.text.split()[1]) if len(message.text.split()) > 1 else 5
+    bot.reply_to(message, "he" * count_heh)
+
+# Запуск бота
+bot.polling()
